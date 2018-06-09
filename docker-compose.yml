@@ -1,0 +1,49 @@
+version: '2'
+services:
+  wordpress:
+    image: wordpress:4.9.6
+    networks:
+      - front
+      - back
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_NAME: wpdb
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_DB_HOST: wordpress_db
+    volumes:
+      - /htdocker/XXX/config/php.conf.uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - /htdocker/XXX/www/:/var/www/html
+  wordpress_db:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    command: "--innodb_use_native_aio=0"
+    volumes:
+      - /htdocker/XXX/sql/inuse/:/docker-entrypoint-initdb.d
+      - /htdocker/XXX/sql/temp/:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=wpdb
+      - MYSQL_USERNAME=root
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+     - back
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.6
+    networks:
+     - back
+    volumes:
+      - /htdocker/XXX/config/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    ports:
+      - 8888:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: wordpress_db
+volumes:
+    wordpress-db-data:
+      driver: local
+networks:
+  front:
+  back:
