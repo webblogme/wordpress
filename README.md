@@ -17,18 +17,36 @@ You should have these install on your machine
 * Git
 
 ### Tested on 
-* Windows 7
-* Docker runs with Oracle VM
+* Windows 7 - Docker toolbox
+* Windows 10 - Docker CE for Win10
+
+### Docker volume
+WINDOWS 7 : You can change it in docker-compose.yml / replace XXX with your project folder
+```
+    volumes:
+      - /htdocker/XXX/config/php.conf.uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - /htdocker/XXX/www/:/var/www/html
+```
+WINDOWS 10 : Change host volume to begin with .
+```
+    volumes:
+      - ./config/php.conf.uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./www/:/var/www/html
+```
 
 ### How to use
-Run docker machine.
-In case of first time use: you need to run command in MINGW64. this might take a while.
+First time use: you need to run command in MINGW64. this might take a while.
 ```
-docker-compose build
+docker-compose up -d --build
 ```
 then you can just type in cmd 
 ```
 docker-compose up -d
+```
+
+### To access local site
+```
+http://localhost
 ```
 
 ### To access PHP MyAdmin
@@ -37,13 +55,6 @@ http://localhost:8888
 ```
 Username: root / Password: root
 
-### Docker volume
-You can change it in docker-compose.yml / replace XXX with your project folder
-```
-    volumes:
-      - /htdocker/XXX/config/php.conf.uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
-      - /htdocker/XXX/www/:/var/www/html
-```
 
 ### Default database name
 You can change it in docker-compose.yml
@@ -70,11 +81,6 @@ UPDATE wp_posts SET post_content = REPLACE(post_content, 'http://www.yourwebsite
 UPDATE wp_postmeta SET meta_value = REPLACE(meta_value, 'http://www.yourwebsite.com', 'http://localhost');
 UPDATE wp_options SET option_value = REPLACE(option_value, 'http://www.yourwebsite.com', 'http://localhost')
 ```
-
-
-
-
-
 
 
 
